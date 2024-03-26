@@ -1,0 +1,8 @@
+__pycache__
+venv
+test
+public
+*.bat
+*.sh
+node_modules
+built

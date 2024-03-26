@@ -1,0 +1,28 @@
+{
+[local]
+
+[global]
+one = ""
+six = "class='active'"
+
+[default]
+
+[config]
+containers = ["../../../../shared/header.html"]
+output_name = "index.html"
+}
+<main>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="#" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+    
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+    
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <p style="text-align: center;">Don't have an account? Create one<a href="%basedir%/create"> here!</a></p>
+</main>

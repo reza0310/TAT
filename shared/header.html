@@ -1,0 +1,58 @@
+{
+[local]
+
+[global]
+basedir = "/PAGES/tat/web/www/public"
+
+[default]
+one = "class='active'"
+two = ""
+three = ""
+four = ""
+five = ""
+six = ""
+seven = ""
+
+[config]
+containers = []
+output_name = "error.html"
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track A Train</title>
+    <link rel="stylesheet" href="%basedir%/style.css">
+</head>
+
+<body>
+    <header>
+		<nav id = "navbar_section">
+			<div class="search-container">
+				<input type="text" placeholder="Search...">
+				<button type="submit">Search</button>
+			</div>
+			<a href="%basedir%" %one%>Home Page</a>
+			<a href="%basedir%/journey" %two%>Find Journeys</a>
+			<a href="%basedir%/betting" %three%>Bet on a Train</a>
+			<a href="%basedir%/tickets" %four%>My Tickets</a>
+			<a href="%basedir%/account" %five%>My Account</a>
+			<a href="%basedir%/login" %six%>Login</a>
+            <a href="%basedir%/FAQ" %seven%>FAQ</a>
+		</nav>
+    </header>
+	%content%
+    <footer>
+        <p> Contact info and FAQ here.</p>
+        <p>For our FAQ, please click <a style="color: white;" href="%basedir%/FAQ">here!</a></p>
+        <ul>
+            <li>email: cp2049@hw.ac.uk</li>
+            <li>address: The Avenue, Edinburgh EH14 4AS </li>
+            <li>phone number: 0131 449 5111</li>
+        </ul>
+    </footer>
+</body>
+
+</html>
