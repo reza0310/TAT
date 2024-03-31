@@ -12,6 +12,13 @@ containers = ["../../../../shared/header.html"]
 output_name = "index.html"
 }
 <main>
-<h2>Find journeys here!</h2>
-<p>On this page, you will be able to find train journeys.</p>
+	<h2>Find journeys here!</h2>
+	<div id="data">
+		<form id="form" method="GET" action=".">
+			<label for="journey_id">ID of the journey you are looking for:</label><br>
+			<input type="number" id="journey_id" name="journey_id"><br>
+			<input type="submit" value="Submit">
+		</form>
+	</div>
+	<script src="load.js"></script>
 </main>

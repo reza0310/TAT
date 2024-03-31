@@ -1,8 +1,9 @@
 {
 [local]
+css_path = "/PAGES/f28cd_project/shared/css"
 
 [global]
-basedir = "/PAGES/tat/web/www/public"
+basedir = "/PAGES/f28cd_project/web/www/public"
 
 [default]
 one = "class='active'"
@@ -24,7 +25,7 @@ output_name = "error.html"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track A Train</title>
-    <link rel="stylesheet" href="%basedir%/style.css">
+    <link rel="stylesheet" href="%css_path%/style.css">
 </head>
 
 <body>
@@ -36,7 +37,6 @@ output_name = "error.html"
 			</div>
 			<a href="%basedir%" %one%>Home Page</a>
 			<a href="%basedir%/journey" %two%>Find Journeys</a>
-			<a href="%basedir%/betting" %three%>Bet on a Train</a>
 			<a href="%basedir%/tickets" %four%>My Tickets</a>
 			<a href="%basedir%/account" %five%>My Account</a>
 			<a href="%basedir%/login" %six%>Login</a>

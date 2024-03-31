@@ -4,10 +4,11 @@ const src_dir = "./private";
 const output_dir = path.resolve(__dirname, 'public');
 
 pages = [
-    "test.ts",
-    "hideshow.ts",
-    "inscription/register.ts",
-    "connexion/connect.ts"
+    "map.ts",
+	"create/register.ts",
+	"account/check.ts",
+	"login/connect.ts",
+	"journey/load.ts"
 ];
 
 var entries = {};

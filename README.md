@@ -6,9 +6,10 @@ This project is an aim to create a website connected with a database, and the we
 
 ## Contributing
 Caitlin - I am creating the CSS for the website
+Geoffroy - I am creating the back-end and website file structure
 
 ## Authors and acknowledgment
-Authors - Caitlin Pearson, [add your name here please]
+Authors - Caitlin Pearson, Geoffroy Du Prey
 
 ## Project status
 This project is currently under development. We aim to complete this project by the end of March 2024.

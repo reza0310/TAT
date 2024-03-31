@@ -1,7 +1,7 @@
 import jsSHA from "jssha";
 
 export const API_WEBPATH = "http://127.0.0.1:8081";
-export const WEBSITE_WEBPATH = "https://127.0.0.1/PAGES/wishlist/web/www/public";
+export const WEBSITE_WEBPATH = "https://127.0.0.1/PAGES/f28cd_project/web/www/public";
 const SENSIBLE_KEYS = ["mdp", "pass", "password", "mot_de_passe"]
 
 export interface Dictionary<T> {
@@ -30,4 +30,8 @@ export function replace_document(HTML: string): void {
 	var newHTML = document.open("text/html", "replace"); 
 	newHTML.write(HTML); 
 	newHTML.close(); 
+}
+
+export function capitalize (str: string, lower: boolean = false): string {
+	return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
 }

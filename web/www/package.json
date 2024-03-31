@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/google.maps": "^3.55.5",
     "@types/node": "^20.10.6",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
@@ -20,6 +21,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.6",
     "jssha": "^3.3.1"
   }
 }

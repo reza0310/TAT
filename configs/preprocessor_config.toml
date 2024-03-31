@@ -1,6 +1,6 @@
 [WWW]
 name_white_or_black_list = true  # True for whitelist, false for blacklist.
-name_list = ["index.html", "error.html"]
+name_list = ["index.html", "error.html", "success.html"]
 folder_names_blacklist = []  # Folders to not explore no matter what
 default_list_separator = ", "  # Default separator when parsing toml lists if none are precised
 css_file = "../../shared/css/style.css"

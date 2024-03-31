@@ -52,7 +52,7 @@ export class API {
         let method = req.method;
         let paths = this.endpoints.get(method!.toUpperCase());
         let cb = (paths !== undefined) ? paths.get(url.pathname) : undefined;
-		console.log("Received request "+url.pathname)
+		if (method != "OPTIONS") console.log("Received request "+url.pathname);
         if (cb === undefined) {
             rep.writeHead(404, HEADERS);
             rep.write(JSON.stringify({"error": "unknown endpoint"}));

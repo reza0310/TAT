@@ -12,9 +12,11 @@ containers = ["../../../../shared/header.html"]
 output_name = "index.html"
 }
 <main>
+	<h2>Start an account with us today!</h2>
+
 	<div class="login-container">
 		<h2>Create your Account!</h2>
-		<form action="#" method="post">
+		<form method="post" id="form">
 			<label for="username">Username:</label>
 			<input type="text" id="username" name="username" required>
 
@@ -24,4 +26,6 @@ output_name = "index.html"
 			<button type="submit">Submit</button>
 		</form>
 	</div>
+	
+	<script src="register.js"></script>
 </main>

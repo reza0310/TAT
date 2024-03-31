@@ -152,7 +152,7 @@ def process_file_recur(filepath: str, variables: dict, node: Tree) -> tuple[str,
     var_start = 0
     outhtml = ""
     for i in range(len(html)):
-        if html[i] == "%":
+        if html[i] == "%"and i < len(html)-1 and html[i+1] != ";":
             if not invar and i < len(html)-1 and html[i+1] != " ":  # Variable start
                 invar = True
                 var_start = i+1  # +1 car le substring inclus le char avant les :
@@ -224,9 +224,13 @@ if __name__ == "__main__":
                 if not os.path.isdir(element.replace(INPATH, OUTPATH)):
                     os.mkdir(element.replace(INPATH, OUTPATH))
             else:
-                if (configs[config]["name_white_or_black_list"] and element.split("/")[-1] in configs[config]["name_list"]) or (element.split("/")[-1] not in configs[config]["name_list"]):  # (Whitelist) or (Blacklist)
+                if (configs[config]["name_white_or_black_list"] and element.split("/")[-1] in configs[config]["name_list"]) or (not configs[config]["name_white_or_black_list"] and not element.split("/")[-1] in configs[config]["name_list"]):  # (Whitelist) or (Blacklist)
                     # On process le fichier
-                    name, content = process_file(element)
+                    try:
+                        name, content = process_file(element)
+                    except Exception as e:
+                        print(e)
+                        raise Exception("ERROR IN FILE "+element)                        
                     filename = element.replace(INPATH, OUTPATH).replace(element.split("/")[-1], name)
                     with open(filename, "w+") as file:
                         file.write(content)
