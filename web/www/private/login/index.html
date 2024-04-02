@@ -11,8 +11,11 @@ six = "class='active'"
 containers = ["../../../../shared/header.html"]
 output_name = "index.html"
 }
+
 <main>
-    <div class="login-container">
+	<h1 id="result"></h1>
+    
+	<div id="container1" class="login-container">
         <h2>Login</h2>
         <form id="form" method="post">
             <label for="username">Username:</label>
@@ -23,7 +26,12 @@ output_name = "index.html"
     
             <button type="submit">Login</button>
         </form>
+		<p style="text-align: center;">Don't have an account? Create one<a href="%basedir%/create"> here!</a></p>
+	</div>
+    
+	<div id="container2" class="login-container" hidden>
+		<center><button type="submit" id="deco">Disconnect</button></center>
     </div>
-    <p style="text-align: center;">Don't have an account? Create one<a href="%basedir%/create"> here!</a></p>
+
 	<script src="connect.js"></script>
 </main>

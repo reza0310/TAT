@@ -17,6 +17,28 @@ output_name = "index.html"
 		Journey finding, ticket booking and even betting on a train service!</p>
 	</div>
 
+	<div id="stations_template" hidden>
+		<table>
+			<tr><th style="border: 2px solid black;" id="stations_template_title"></th></tr>
+			<tr><td style="border: 1px solid black;" id="stations_template_content"></td></tr>
+			<tr><td style="border: 1px solid black;"><b>Trains in this station:</b><br><div id="stations_template_trains"></div></td></tr>
+		</table>
+	</div>
+
+	<div id="trains_in_station_template" hidden>
+		<center><h4><div id="trains_in_station_template_title"></div></h4></center><br>
+		<div id="trains_in_station_template_content"></div>
+		<a id="trains_in_station_template_next_journey" href="#">NEXT JOURNEY</a>
+	</div>
+
+	<div id="trains_template" hidden>
+		<table>
+			<tr><th style="border: 2px solid black;" id="trains_template_title"></th></tr>
+			<tr><td style="border: 1px solid black;"><div id="trains_template_content"></div><a id="trains_template_next_journey" href="#">NEXT JOURNEY</a></td></tr>
+			
+		</table>
+	</div>
+
 	<div class="column">
 		<h2>Train-Tracking Map!</h2>
 		<div id="map" style="height: 30em; width: 30em;"></div>

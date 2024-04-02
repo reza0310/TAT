@@ -13,6 +13,15 @@ output_name = "index.html"
 }
 <main>
 <h2>Find your tickets here!</h2>
-<p>On this web page you are able to see what tickets you have bought previously. </p>
-<p>Please login to view your tickets.</p>
+
+<div id="ticket_template" hidden>
+	<div style="border: 1px solid black; display: inline-block; width: fit-content;" id="ticket_template_content"></div>
+</div>
+
+<p id="data"></p>
+
+<div id="data2" style="margin-top: 5em;">
+</div>
+
+<script src="check.js"></script>
 </main>

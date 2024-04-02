@@ -14,5 +14,23 @@ output_name = "index.html"
 <main>
 <h2>This is your account page!</h2>
 <p id="data"></p>
+<div id="tables"></div>
+
+<div id="journey_template" hidden>
+	<table class="data" style="width: 100%; table-layout: fixed; margin-top: 3em;">
+		<tr>
+			<td style="border: 1px solid black;" id="journey_template_id" colspan=3></td>
+		</tr>
+		<tr>
+			<td style="border: 1px solid black;"><h4>Departure:</h4><br><div id="journey_template_d"></div></td>
+			<td style="border: 1px solid black;"><h4>Train:</h4><br><div id="journey_template_t"></div></td>
+			<td style="border: 1px solid black;"><h4>Arrival:</h4><br><div id="journey_template_a"></div></td>
+		</tr>
+		<tr>
+			<td style="border: 1px solid black;" colspan=3><div id="journey_template_b1"></div><button type="submit" id="journey_template_b2" -action-></button></td>
+		</tr>
+	</table>
+</div>
+
 <script src="check.js"></script>
 </main>

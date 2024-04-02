@@ -6,8 +6,6 @@ type cb = (r: XMLHttpRequest) => Promise<void>;
 
 export function request(protocol: string, url: string, data: u.Dictionary<string>): XMLHttpRequest {
 	var xhr = new XMLHttpRequest();
-	console.log("DEBUG");
-	console.log(data);
 	xhr.onreadystatechange = function(): void {
 		if (this.readyState === this.DONE) {
 			if (this.status === 200) {
@@ -21,10 +19,8 @@ export function request(protocol: string, url: string, data: u.Dictionary<string
 	xhr.open(protocol, url);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	if (data instanceof FormData) {
-		console.log("FORM");
 		xhr.send(u.form_to_json(data));
 	} else {
-		console.log("PLAIN");
 		xhr.send(JSON.stringify(data));
 	}
 	return xhr;

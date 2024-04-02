@@ -1,12 +1,9 @@
 /* Responsive layout */
 @media only screen and (max-width: 768px) {
-  
   /* Adjust header and navigation for smaller screens */
-
   header {
       padding: 10px;
   }
-
 }
 
 /* Reset default margin and padding */
@@ -16,8 +13,8 @@
   box-sizing: border-box;
 }
 
-body{
-  background: linear-gradient(to bottom, #F0EFF4, #b681c6);
+main {
+  height: 38em;
 }
 
 footer {
@@ -27,7 +24,7 @@ footer {
   columns:3;
   padding: 20px;
   text-align:left;
-  position: absolute;
+  position: fixed;
   bottom: 0;
 }
 
@@ -37,6 +34,7 @@ main.columns-container {
   flex-direction: column; /* Set the direction to column */
   align-items: center; /* Center the columns horizontally */
   padding: 20px;
+  background: linear-gradient(left to right, #c3b4ff, #F0EFF4);
 }
 
 input {
@@ -48,7 +46,7 @@ input {
 
 button {
   .button {
-    display: inline-block;
+    display: inline;
     padding: 10px 20px;
     background-color: #2F243A;
     color: #fff;
@@ -56,12 +54,12 @@ button {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    align-items: center;
   }
 
   .button:hover {
     background-color: #444054;
   }
-  
 }
 
 /* Responsive typography */
@@ -127,4 +125,17 @@ p {
   padding-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+img {
+  object-fit: contain;
+  object-position: 50% 50%;
+}
+
+#data, .data {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  padding: auto;
+  background-color: #444054;
+  color:#F1F1F1;
 }

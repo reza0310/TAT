@@ -89,17 +89,100 @@ server.get("/get_stations", async (req: api.APIRequest, rep: api.APIResponse) =>
 });
 
 server.get("/get_trains", async (req: api.APIRequest, rep: api.APIResponse) => {
-	var tmp = await db.query("SELECT t.capacity, t.model, t.owner, s.name AS status, t.latitude, t.longitude FROM trains t JOIN status_enum s ON t.status = s.id", []);
+	var tmp = await db.query("SELECT t.id, t.capacity, t.model, t.owner, s.name AS status, t.latitude, t.longitude FROM trains t JOIN status_enum s ON t.status = s.id", []);
 	var results = tmp.map((v: any[]) => Object.assign({}, v));
 	rep.send(results);
 });
 
-server.get("/get_journey", async (req: api.APIRequest, rep: api.APIResponse) => {
+server.post("/get_journey", async (req: api.APIRequest, rep: api.APIResponse) => {
+	if (req.data != null && (!("id" in req.data))) {
+		console.log(req);
+		rep.send({"result": "INVALID REQUEST ERROR"});
+	} else {
+		var tmp = await db.query("SELECT j.id, j.departure_time, j.arrival_time, t.capacity AS train_capacity, t.model AS train_model, t.owner AS train_owner, st.name AS train_status, t.latitude AS train_latitude, t.longitude AS train_longitude, s.name AS departure_name, s.address AS departure_address, s.latitude AS departure_latitude, s.longitude AS departure_longitude, s2.name AS arrival_name, s2.address AS arrival_address, s2.latitude AS arrival_latitude, s.longitude AS arrival_longitude FROM journeys j JOIN trains t ON j.train=t.id JOIN status_enum st ON t.status=st.id JOIN stations s ON j.departure_station=s.id JOIN stations s2 ON j.arrival_station=s2.id WHERE j.id=?", [req.data["id"]]);
+		var results = tmp.map((v: any[]) => Object.assign({}, v));
+		rep.send(results);
+	}
+});
+
+server.post("/get_next_journey", async (req: api.APIRequest, rep: api.APIResponse) => {
 	if (req.data != null && (!("id" in req.data))) {
 		rep.send({"result": "INVALID REQUEST ERROR"});
 	} else {
+		var tmp = await db.query("SELECT id FROM journeys WHERE departure_time>? AND train=? LIMIT 1", [new Date(), req.data["id"]]);
+		var results = tmp.map((v: any[]) => Object.assign({}, v));
+		rep.send(results);
+	}
+});
+
+server.post("/get_fav_journey", async (req: api.APIRequest, rep: api.APIResponse) => {
+	if (req.data != null && (!("owner" in req.data)) && (!("journey" in req.data))) {
+		rep.send({"result": "INVALID REQUEST ERROR"});
+	} else {
+		var tmp = await db.query("SELECT * FROM saved_journeys WHERE owner=? AND journey=?", [req.data["owner"], req.data["journey"]]);
+		if (tmp.toString() == [].toString()) {
+			rep.send({result: false});
+		} else {
+			rep.send({result: true});
+		}
+	}
+});
+
+server.post("/get_fav_journeys", async (req: api.APIRequest, rep: api.APIResponse) => {
+	if (req.data != null && (!("owner" in req.data))) {
+		rep.send({"result": "INVALID REQUEST ERROR"});
+	} else {
+		var tmp = await db.query("SELECT * FROM saved_journeys WHERE owner=?", [req.data["owner"]]);
+		var results = tmp.map((v: any[]) => Object.assign({}, v));
+		rep.send(results);
+	}
+});
+
+server.post("/set_fav_journey", async (req: api.APIRequest, rep: api.APIResponse) => {
+	if (req.data != null && (!("owner" in req.data)) && (!("journey" in req.data))) {
+		rep.send({"result": "INVALID REQUEST ERROR"});
+	} else {
+		var tmp = await db.query("SELECT * FROM saved_journeys WHERE owner=? AND journey=?", [req.data["owner"], req.data["journey"]]);
+		if (tmp.toString() == [].toString()) {
+			tmp = await db.query("INSERT INTO saved_journeys (owner, journey) VALUES (?, ?)", [req.data["owner"], req.data["journey"]]);
+			rep.send({result: "OK"});
+		} else {
+			tmp = await db.query("DELETE FROM saved_journeys WHERE owner=? AND journey=?", [req.data["owner"], req.data["journey"]]);
+			rep.send({result: "OK"});
+		}
+	}
+});
+
+server.post("/get_available_tickets", async (req: api.APIRequest, rep: api.APIResponse) => {
+	if (req.data != null && (!("id" in req.data))) {
 		console.log(req);
-		var tmp = await db.query("SELECT j.id, j.departure_time, j.arrival_time, t.capacity AS train_capacity, t.model AS train_model, t.owner AS train_model, st.name AS train_status, t.latitude AS train_latitude, t.longitude AS train_longitude, s.name AS departure_name, s.address AS departure_address, s.latitude AS departure_latitude, s.longitude AS departure_longitude, s2.name AS arrival_name, s2.address AS arrival_address, s2.latitude AS arrival_latitude, s.longitude AS arrival_longitude FROM journeys j JOIN trains t ON j.train=t.id JOIN status_enum st ON t.status=st.id JOIN stations s ON j.departure_station=s.id JOIN stations s2 ON j.arrival_station=s2.id WHERE j.id=?", [req.data["id"]]);
+		rep.send({"result": "INVALID REQUEST ERROR"});
+	} else {
+		var tmp = await db.query("SELECT * FROM tickets WHERE journey=? AND owner IS NULL", [req.data["id"]]);
+		var results = tmp.map((v: any[]) => Object.assign({}, v));
+		rep.send(results);
+	}
+});
+
+server.post("/buy_ticket", async (req: api.APIRequest, rep: api.APIResponse) => {
+	if (req.data != null && (!("owner" in req.data)) && (!("id" in req.data))) {
+		rep.send({"result": "INVALID REQUEST ERROR"});
+	} else {
+		var tmp = await db.query("SELECT * FROM tickets WHERE id=? AND owner IS NULL", [req.data["id"]]);
+		if (tmp.toString() == [].toString()) {
+			rep.send({result: "TOO LATE"});
+		} else {
+			tmp = await db.query("UPDATE tickets SET owner=? WHERE id=?", [req.data["owner"], req.data["id"]]);
+			rep.send({result: "OK"});
+		}
+	}
+});
+
+server.post("/get_my_tickets", async (req: api.APIRequest, rep: api.APIResponse) => {
+	if (req.data != null && (!("owner" in req.data))) {
+		rep.send({"result": "INVALID REQUEST ERROR"});
+	} else {
+		var tmp = await db.query("SELECT * FROM tickets WHERE owner=?", [req.data["owner"]]);
 		var results = tmp.map((v: any[]) => Object.assign({}, v));
 		rep.send(results);
 	}

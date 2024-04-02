@@ -7,6 +7,7 @@ pages = [
     "map.ts",
 	"create/register.ts",
 	"account/check.ts",
+	"tickets/check.ts",
 	"login/connect.ts",
 	"journey/load.ts"
 ];

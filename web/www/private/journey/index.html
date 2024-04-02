@@ -13,12 +13,40 @@ output_name = "index.html"
 }
 <main>
 	<h2>Find journeys here!</h2>
-	<div id="data">
-		<form id="form" method="GET" action=".">
-			<label for="journey_id">ID of the journey you are looking for:</label><br>
-			<input type="number" id="journey_id" name="journey_id"><br>
-			<input type="submit" value="Submit">
-		</form>
+	<form id="form" method="GET" action=".">
+		<label for="journey_id">ID of the journey you are looking for:</label><br>
+		<input type="number" id="journey_id" name="journey_id"><br>
+		<input type="submit" value="Submit" style= "display: flex;">
+	</form>
+
+	<div id="journey_template" hidden>
+		<table style="width: 100%; table-layout: fixed;">
+			<tr>
+				<td style="border: 1px solid black;" id="journey_template_id" colspan=3></td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid black;" id="journey_template_d"><h4>Departure:</h4><br></td>
+				<td style="border: 1px solid black;" id="journey_template_t"><h4>Train:</h4><br></td>
+				<td style="border: 1px solid black;" id="journey_template_a"><h4>Arrival:</h4><br></td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid black;" colspan=3><div id="journey_template_b1"></div><button type="submit" id="journey_template_b2" -action-></button></td>
+			</tr>
+		</table>
 	</div>
+
+	<div id="ticket_template" hidden>
+		<div style="border: 1px solid black; display: inline-block; width: fit-content;">
+			<div id="ticket_template_content"></div>
+			<button type="submit" id="ticket_template_submit" -action->BUY !</button>
+		</div>
+	</div>
+
+	<div id="data">
+	</div>
+
+	<div id="data2" style="margin-top: 5em;">
+	</div>
+
 	<script src="load.js"></script>
 </main>

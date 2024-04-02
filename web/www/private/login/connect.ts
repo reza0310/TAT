@@ -8,16 +8,44 @@ async function treat_result(request: XMLHttpRequest): Promise<void> {
 	if (out == "CONNECTION SUCCESS") {
 		sessionStorage.setItem("id", res["id"]!);
 		sessionStorage.setItem("token", res["token"]!);
-		var req: XMLHttpRequest = new (r.request as any)("GET", u.WEBSITE_WEBPATH+"/login/success.html", {});
+		var rr: string = "Connection successful!";
+		await switch_to(true);
 	} else {
-		console.log(out);
-		var req: XMLHttpRequest = new (r.request as any)("GET", u.WEBSITE_WEBPATH+"/login/error.html", {});
+		var rr: string = "Connection failed!";
 	}
-	u.replace_document(await r.receive_blocking(req));
+	document.getElementById("result")!.innerHTML = rr;
+}
+
+async function switch_to(val: boolean): Promise<void> {
+	if (val) {
+		document.getElementById("container1")!.hidden = true;
+		document.getElementById("container2")!.hidden = false;
+		document.getElementById("deco")!.onclick = async function() { 
+			sessionStorage.removeItem("id");
+			sessionStorage.removeItem("token");
+			document.getElementById("result")!.innerHTML = "Disconnection successful!";
+			await switch_to(false);
+			return false;
+		};
+	} else {
+		document.getElementById("container1")!.hidden = false;
+		document.getElementById("container2")!.hidden = true;
+	}
 }
 
 window.onload = (): void => {
 	(async () => {
-		await r.request_form("POST", u.API_WEBPATH+"/connect", document.getElementById("form")! as HTMLFormElement, treat_result);
+		await switch_to(false);
+		if (sessionStorage.getItem("id") == null || sessionStorage.getItem("token") == null) {
+			await r.request_form("POST", u.API_WEBPATH+"/connect", document.getElementById("form")! as HTMLFormElement, treat_result);
+		} else {
+			var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/check_connection", {id: sessionStorage.getItem("id"), token: sessionStorage.getItem("token")});
+			var res: any = JSON.parse(await r.receive_blocking(req));
+			if (res["result"]! as string == "YES") {
+				await switch_to(true);
+			} else {
+				await r.request_form("POST", u.API_WEBPATH+"/connect", document.getElementById("form")! as HTMLFormElement, treat_result);
+			}
+		}
 	})();
 }
