@@ -17,6 +17,8 @@ main {
   height: 38em;
 }
 
+
+/*sets the layout of the footer into columns and defines the colour*/
 footer {
   background-color: #444054;
   color:#ddd;
@@ -28,14 +30,17 @@ footer {
   bottom: 0;
 }
 
+
+/*sets the layout of the main body of the website, for each column in the webpage and defines a gradient colour*/
 main.columns-container {
   background-color: #F0EFF4;
   display: flex;
   flex-direction: column; /* Set the direction to column */
   align-items: center; /* Center the columns horizontally */
   padding: 20px;
-  background: linear-gradient(left to right, #c3b4ff, #F0EFF4);
+  background: linear-gradient(to right, #c3b4ff, #F0EFF4);
 }
+
 
 input {
   width: 100%;
@@ -44,6 +49,7 @@ input {
   box-sizing: border-box;
 }
 
+/*defines the button design, where it should be and what colour it is etc.*/
 button {
   .button {
     display: inline;
@@ -57,6 +63,8 @@ button {
     align-items: center;
   }
 
+
+  /*when you hover over a button it will change colour*/
   .button:hover {
     background-color: #444054;
   }
@@ -65,13 +73,13 @@ button {
 /* Responsive typography */
 h2 {
   font-size: 2.5rem;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 p {
   font-size: 1rem;
   line-height: 1.5;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* The navbar container */
@@ -99,18 +107,6 @@ p {
   color: white;
 }
 
-.header {
-  background-color: #F1F1F1;
-  text-align: center;
-  padding: 20px;
-}
-
-.search-container {
-  display:flexbox;
-  float: left;
-  padding: 20px;
-}
-
 .column {
   background-color: #F0EFF4;
   width: 100%; /* Each column takes the full width of the container */
@@ -127,11 +123,14 @@ p {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-img {
+/*ensuring that the logo image on the website fits the intended area*/
+#logos {
   object-fit: contain;
   object-position: 50% 50%;
 }
 
+
+/*changing the look of the data output by the website on the "Find Journeys page"*/
 #data, .data {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
