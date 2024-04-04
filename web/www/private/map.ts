@@ -1,7 +1,20 @@
 import * as u from '../../../shared/api_client/utils';
 import * as r from '../../../shared/api_client/requests';
 
+// @ts-ignore
+window.initMap = initMap;
+
 async function initMap(): Promise<void> {
+	while(typeof initMap_wrapped !== "function") {  // https://stackoverflow.com/questions/53738478/javascript-wait-until-function-is-defined
+		await u.delay(500);
+	}
+	console.log("Function declared");
+	return await initMap_wrapped();
+}
+
+console.log("Wrapper declared");
+
+async function initMap_wrapped(): Promise<void> {
   const center: google.maps.LatLng = new google.maps.LatLng(55.95251382144358, -3.1877747591836765);
   const map: google.maps.Map = new google.maps.Map(
     document.getElementById("map") as HTMLElement,
@@ -120,7 +133,3 @@ async function initMap(): Promise<void> {
 	}
 	console.log("MARKERS LOADED");
 }
-
-// @ts-ignore
-window.initMap = initMap;
-console.log("Function declared");
