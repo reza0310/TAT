@@ -15,6 +15,7 @@
 
 main {
   height: 38em;
+  background: linear-gradient(to right, #c3b4ff, #F0EFF4);
 }
 
 
@@ -38,7 +39,6 @@ main.columns-container {
   flex-direction: column; /* Set the direction to column */
   align-items: center; /* Center the columns horizontally */
   padding: 20px;
-  background: linear-gradient(to right, #c3b4ff, #F0EFF4);
 }
 
 
@@ -125,14 +125,15 @@ p {
 
 /*ensuring that the logo image on the website fits the intended area*/
 #logos {
-  object-fit: contain;
-  object-position: 50% 50%;
+  align-items: left;
+  height:100px;
+  width:100px;
 }
 
 
 /*changing the look of the data output by the website on the "Find Journeys page"*/
 #data, .data {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   text-align: center;
   padding: auto;
   background-color: #444054;
