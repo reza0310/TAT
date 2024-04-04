@@ -124,7 +124,7 @@ p {
 }
 
 /*ensuring that the logo image on the website fits the intended area*/
-#logos {
+.logos {
   align-items: left;
   height:100px;
   width:100px;
