@@ -12,14 +12,14 @@ async function findGetParameter(parameterName: string): Promise<string> {
 }
 
 async function eeeee(id: string): Promise<boolean> {
-	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/set_fav_journey", {owner: sessionStorage.getItem("id"), journey: id});
+	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/set_fav_journey", {owner: sessionStorage.getItem("id"), journey: id}, true);
 	console.log(await r.receive_blocking(req));
 	location.reload();
     return false;
 }
 
 async function aaaaa(id: string): Promise<boolean> {
-	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/buy_ticket", {owner: sessionStorage.getItem("id"), id: id});
+	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/buy_ticket", {owner: sessionStorage.getItem("id"), id: id}, true);
 	console.log(await r.receive_blocking(req));
 	location.reload();
     return false;
@@ -29,8 +29,8 @@ window.onload = (): void => {
 	(async () => {
 		var ide: string = await findGetParameter("journey");
 		if (ide != null) {
-			var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/get_journey", {id: ide});
-			var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req));
+			var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/get_journey", {id: ide}, false);
+			var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req))["result"];
 			var template: HTMLElement = document.getElementById("journey_template")!;
 			if (!(res.length == 0)) {
 				document.getElementById("journey_template_id")!.innerHTML = "Jouney n°" + res[0].id;
@@ -46,18 +46,18 @@ window.onload = (): void => {
 					document.getElementById("journey_template_b1")!.innerHTML = "<h1>You are not connected</h1>";
 					document.getElementById("journey_template_b2")!.hidden = true;
 				} else {
-					req = new (r.request as any)("POST", u.API_WEBPATH+"/check_connection", {id: sessionStorage.getItem("id"), token: sessionStorage.getItem("token")});
+					req = new (r.request as any)("POST", u.API_WEBPATH+"/check_connection", {id: sessionStorage.getItem("id"), token: sessionStorage.getItem("token")}, false);
 					res = JSON.parse(await r.receive_blocking(req));
 					if (res["result"]! as string == "YES") {
-						req = new (r.request as any)("POST", u.API_WEBPATH+"/get_fav_journey", {owner: sessionStorage.getItem("id"), journey: ide});
-						res = JSON.parse(await r.receive_blocking(req));
+						req = new (r.request as any)("POST", u.API_WEBPATH+"/get_fav_journey", {owner: sessionStorage.getItem("id"), journey: ide}, true);
+						res = await r.receive_blocking(req);
 						document.getElementById("journey_template_b1")!.hidden = true;
 						document.getElementById("journey_template_b2")!.hidden = false;
 						document.getElementById("journey_template")!.innerHTML = document.getElementById("journey_template")!.innerHTML.replace(/-action-/g, `onclick="eeeee(${ide})"`);
 						if (res.result) document.getElementById("journey_template_b2")!.innerHTML = "Click to unfavourite!";
 						else document.getElementById("journey_template_b2")!.innerHTML = "Click to favourite!";
-						req = new (r.request as any)("POST", u.API_WEBPATH+"/get_available_tickets", {id: ide});
-						res = JSON.parse(await r.receive_blocking(req));
+						req = new (r.request as any)("POST", u.API_WEBPATH+"/get_available_tickets", {id: ide}, false);
+						res = JSON.parse(await r.receive_blocking(req))["result"];
 						for (var i: number = 0; i < res.length; i++) {
 							var content: string = "";
 							for (const [key, value] of Object.entries(res[i])) {

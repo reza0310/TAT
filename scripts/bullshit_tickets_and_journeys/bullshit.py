@@ -28,7 +28,14 @@ def move(day_num, train, departure_station, arrival_station, capacity):
     cur.execute("SELECT COUNT(*) FROM journeys")
     journey_id = cur.fetchone()[0]
     for i in range(capacity):
-        cur.execute("INSERT INTO tickets (price, journey) VALUES (?, ?);", (randint(50, 100), journey_id))
+        r = randint(1, 100)
+        if r < 10:
+            options = "Assistance dog allowed"
+        elif r < 30:
+            options = "Wheelchair assistance"
+        else:
+            options = None
+        cur.execute("INSERT INTO tickets (price, journey, options) VALUES (?, ?, ?);", (randint(50, 100), journey_id, options))
     conn.commit()
 
 cur.execute("SELECT id, capacity FROM trains")

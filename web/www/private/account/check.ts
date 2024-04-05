@@ -2,15 +2,15 @@ import * as u from '../../../../shared/api_client/utils';
 import * as r from '../../../../shared/api_client/requests';
 
 async function eeeee(id: string): Promise<boolean> {
-	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/set_fav_journey", {owner: sessionStorage.getItem("id"), journey: id});
+	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/set_fav_journey", {owner: sessionStorage.getItem("id"), journey: id}, true);
 	console.log(await r.receive_blocking(req));
 	location.reload();
     return false;
 }
 
 async function journ(ide: number): Promise<string> {
-	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/get_journey", {id: ide});
-	var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req));
+	var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/get_journey", {id: ide}, false);
+	var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req))["result"];
 	if (!(res.length == 0)) {
 		document.getElementById("journey_template_id")!.innerHTML = "Jouney n°" + res[0].id;
 		document.getElementById("journey_template_d")!.innerHTML = "";
@@ -37,15 +37,15 @@ async function journ(ide: number): Promise<string> {
 	if (sessionStorage.getItem("id") == null || sessionStorage.getItem("token") == null) {
 		output.innerHTML = "<h1>You are not connected</h1><br>";
 	} else {
-		var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/check_connection", {id: sessionStorage.getItem("id"), token: sessionStorage.getItem("token")});
+		var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/check_connection", {id: sessionStorage.getItem("id"), token: sessionStorage.getItem("token")}, false);
 		var res: any = JSON.parse(await r.receive_blocking(req));
 		if (res["result"]! as string == "YES") {
 			output.innerHTML = "<h1>You are properly connected</h1><br>";
 		} else {
 			output.innerHTML = "<h1>You are badly connected</h1><br>";
 		}
-		req = new (r.request as any)("POST", u.API_WEBPATH+"/get_fav_journeys", {owner: sessionStorage.getItem("id")});
-		var rez: Array<u.Dictionary<any>> = JSON.parse(await r.receive_blocking(req));
+		req = new (r.request as any)("POST", u.API_WEBPATH+"/get_fav_journeys", {owner: sessionStorage.getItem("id")}, true);
+		var rez: Array<u.Dictionary<any>> = (await r.receive_blocking(req))["result"]!;
 		for (var i = 0; i < rez.length; i++) {
 			output.innerHTML += await journ(rez[i].journey);
 		}

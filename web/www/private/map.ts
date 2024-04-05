@@ -70,11 +70,11 @@ async function initMap_wrapped(): Promise<void> {
 		});
 	}
   
-	var req: XMLHttpRequest = new (r.request as any)("GET", u.API_WEBPATH+"/get_stations", {});
-	var stations: Array<any> = JSON.parse(await r.receive_blocking(req));
+	var req: XMLHttpRequest = new (r.request as any)("GET", u.API_WEBPATH+"/get_stations", {}, false);
+	var stations: Array<u.Dictionary<any>> = JSON.parse(await r.receive_blocking(req))["result"];
 
-	req = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {});
-	var trains: Array<any> = JSON.parse(await r.receive_blocking(req));
+	req = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {}, false);
+	var trains: Array<u.Dictionary<any>> = JSON.parse(await r.receive_blocking(req))["result"];
 
 	for (const station of stations) {
 		let title: string = station.name;
@@ -95,14 +95,20 @@ async function initMap_wrapped(): Promise<void> {
 				document.getElementById("trains_in_station_template_title")!.innerHTML = trains[i].model + " " + trains[i].id;
 				content = "";
 				for (const [key, value] of Object.entries(trains[i])) {
+					if (key == "lateness") {
+						if (value.search(/early/i) != -1) content += "<div style=\"background-color: yellow;\">";
+						else if (value.search(/late/i) != -1) content += "<div style=\"background-color: red;\">";
+						else content += "<div style=\"background-color: green;\">";
+					}
 					if (!["latitude", "longitude", "id"].includes(key)) {
 						let upkey: string = u.capitalize(key);
 						content += `<b>${upkey}:</b> ${value}<br>`;
 					}
+					if (key == "lateness") content += "</div>";
 				}
 				document.getElementById("trains_in_station_template_content")!.innerHTML = content;
-				req = new (r.request as any)("POST", u.API_WEBPATH+"/get_next_journey", {id: trains[i].id});
-				var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req));
+				req = new (r.request as any)("POST", u.API_WEBPATH+"/get_next_journey", {id: trains[i].id}, false);
+				var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req))["result"];
 				// @ts-ignore
 				document.getElementById("trains_in_station_template_next_journey").href = u.WEBSITE_WEBPATH + "/journey/?journey=" + res[0].id;
 				document.getElementById("stations_template_trains")!.innerHTML += template2.innerHTML.replace(/copyx/g, "copy("+trains[i].id+")");
@@ -118,14 +124,20 @@ async function initMap_wrapped(): Promise<void> {
 		document.getElementById("trains_template_title")!.innerHTML = title;
 		let content: string = "";
 		for (const [key, value] of Object.entries(train)) {
+			if (key == "lateness") {
+				if (value.search(/early/i) != -1) content += "<div style=\"background-color: yellow;\">";
+				else if (value.search(/late/i) != -1) content += "<div style=\"background-color: red;\">";
+				else content += "<div style=\"background-color: green;\">";
+			}
 			if (!["latitude", "longitude", "id"].includes(key)) {
 				let upkey: string = u.capitalize(key);
 				content += `<b>${upkey}:</b> ${value}<br>`;
 			}
+			if (key == "lateness") content += "</div>";
 		}
 		document.getElementById("trains_template_content")!.innerHTML = content;
-		req = new (r.request as any)("POST", u.API_WEBPATH+"/get_next_journey", {id: train.id});
-		var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req));
+		req = new (r.request as any)("POST", u.API_WEBPATH+"/get_next_journey", {id: train.id}, false);
+		var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req))["result"];
 		// @ts-ignore
 		document.getElementById("trains_template_next_journey").href = u.WEBSITE_WEBPATH + "/journey/?journey=" + res[0].id
 		add_marker("train-solid.svg", title, 0, template3.innerHTML.replace(/id=/g, "class=").replace(/copyx/g, "copy("+train.id+")"), train.latitude, train.longitude);

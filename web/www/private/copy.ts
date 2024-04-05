@@ -5,15 +5,15 @@ import * as r from '../../../shared/api_client/requests';
 window.copy = copy;
 
 async function copy(id: number) {
-	var req: XMLHttpRequest = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {});
-	var trains: Array<any> = JSON.parse(await r.receive_blocking(req));
+	var req: XMLHttpRequest = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {}, false);
+	var trains: Array<any> = JSON.parse(await r.receive_blocking(req))["result"];
 	for (const train of trains) {
 		if (train.id == id) {
 			try {
 				navigator.clipboard.writeText(JSON.stringify(train));
 				alert("Copy successfully done");
 			} catch {
-				navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
+				navigator.permissions.query({ name: "clipboard-write" as PermissionName}).then((result) => {
 					if (result.state === "granted" || result.state === "prompt") {
 						navigator.clipboard.writeText(JSON.stringify(train));
 						alert("Copy successfully done");

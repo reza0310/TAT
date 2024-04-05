@@ -37,14 +37,14 @@ window.onload = (): void => {
 	(async () => {
 		await switch_to(false);
 		if (sessionStorage.getItem("id") == null || sessionStorage.getItem("token") == null) {
-			await r.request_form("POST", u.API_WEBPATH+"/connect", document.getElementById("form")! as HTMLFormElement, treat_result);
+			await r.request_form("POST", u.API_WEBPATH+"/connect", document.getElementById("form")! as HTMLFormElement, treat_result, false);
 		} else {
-			var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/check_connection", {id: sessionStorage.getItem("id"), token: sessionStorage.getItem("token")});
+			var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/check_connection", {id: sessionStorage.getItem("id"), token: sessionStorage.getItem("token")}, false);
 			var res: any = JSON.parse(await r.receive_blocking(req));
 			if (res["result"]! as string == "YES") {
 				await switch_to(true);
 			} else {
-				await r.request_form("POST", u.API_WEBPATH+"/connect", document.getElementById("form")! as HTMLFormElement, treat_result);
+				await r.request_form("POST", u.API_WEBPATH+"/connect", document.getElementById("form")! as HTMLFormElement, treat_result, false);
 			}
 		}
 	})();
