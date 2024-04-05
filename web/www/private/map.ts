@@ -15,67 +15,66 @@ async function initMap(): Promise<void> {
 console.log("Wrapper declared");
 
 async function initMap_wrapped(): Promise<void> {
-  const center: google.maps.LatLng = new google.maps.LatLng(55.95251382144358, -3.1877747591836765);
-  const map: google.maps.Map = new google.maps.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 9,
-      center: center,
-	  zoomControl: false,
-	  mapTypeControl: false,
-	  scaleControl: false,
-	  streetViewControl: false,
-	  rotateControl: false,
-	  fullscreenControl: true,
-	  styles: [
-			{
-				featureType: "poi",
-				elementType: "labels",
-				stylers: [
-					  { visibility: "off" }
-				]
-			},
-			{
-			  featureType: "transit",
-			  elementType: "labels.icon",
-			  stylers: [{ visibility: "off" }],
-			}
-		]
-    }
-  );
-  console.log("MAP LOADED");
+	const center: google.maps.LatLng = new google.maps.LatLng(55.95251382144358, -3.1877747591836765);
+	const map: google.maps.Map = new google.maps.Map(document.getElementById("map") as HTMLElement,
+		{
+		  zoom: 9,
+		  center: center,
+		  zoomControl: false,
+		  mapTypeControl: false,
+		  scaleControl: false,
+		  streetViewControl: false,
+		  rotateControl: false,
+		  fullscreenControl: true,
+		  styles: [
+				{
+					featureType: "poi",
+					elementType: "labels",
+					stylers: [
+						  { visibility: "off" }
+					]
+				},
+				{
+				  featureType: "transit",
+				  elementType: "labels.icon",
+				  stylers: [{ visibility: "off" }],
+				}
+			]
+		}
+	);
+	console.log("MAP LOADED");
 
-  function add_marker(icon_url: string, title: string, ind: number, content: string, latitude: number, longitude: number): void {
-	const infowindow = new google.maps.InfoWindow({
-		content: content,
-		ariaLabel: title
-	});
-	
-	const marker = new google.maps.Marker({
-		position: new google.maps.LatLng(latitude, longitude),
-		icon: {
-			url: icon_url,
-			scaledSize: new google.maps.Size(50, 50)
-		},
-		map: map,
-		title: title,
-		optimized: false,
-		zIndex: ind
-	});
-	
-	marker.addListener("click", () => {
-		infowindow.open({
-			anchor: marker,
-			map: map,
+	function add_marker(icon_url: string, title: string, ind: number, content: string, latitude: number, longitude: number): void {
+		const infowindow = new google.maps.InfoWindow({
+			content: content,
+			ariaLabel: title
 		});
-	});
-  }
-  
-  var req = new (r.request as any)("GET", u.API_WEBPATH+"/get_stations", {});
-  var stations: Array<any> = JSON.parse(await r.receive_blocking(req));
 
-  req = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {});
-  var trains: Array<any> = JSON.parse(await r.receive_blocking(req));
+		const marker = new google.maps.Marker({
+			position: new google.maps.LatLng(latitude, longitude),
+			icon: {
+				url: icon_url,
+				scaledSize: new google.maps.Size(50, 50)
+			},
+			map: map,
+			title: title,
+			optimized: false,
+			zIndex: ind
+		});
+
+		marker.addListener("click", () => {
+			infowindow.open({
+				anchor: marker,
+				map: map,
+			});
+		});
+	}
+  
+	var req: XMLHttpRequest = new (r.request as any)("GET", u.API_WEBPATH+"/get_stations", {});
+	var stations: Array<any> = JSON.parse(await r.receive_blocking(req));
+
+	req = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {});
+	var trains: Array<any> = JSON.parse(await r.receive_blocking(req));
 
 	for (const station of stations) {
 		let title: string = station.name;
@@ -105,9 +104,9 @@ async function initMap_wrapped(): Promise<void> {
 				req = new (r.request as any)("POST", u.API_WEBPATH+"/get_next_journey", {id: trains[i].id});
 				var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req));
 				// @ts-ignore
-				document.getElementById("trains_in_station_template_next_journey").href = u.WEBSITE_WEBPATH + "/journey/?journey_id=" + res[0].id
+				document.getElementById("trains_in_station_template_next_journey").href = u.WEBSITE_WEBPATH + "/journey/?journey=" + res[0].id;
+				document.getElementById("stations_template_trains")!.innerHTML += template2.innerHTML.replace(/copyx/g, "copy("+trains[i].id+")");
 				trains.splice(i, 1);
-				document.getElementById("stations_template_trains")!.innerHTML += template2.innerHTML;
 			}
 		}
 		add_marker("school-solid.svg", title, 1, template1.innerHTML.replace(/id=/g, "class="), station.latitude, station.longitude);
@@ -128,8 +127,22 @@ async function initMap_wrapped(): Promise<void> {
 		req = new (r.request as any)("POST", u.API_WEBPATH+"/get_next_journey", {id: train.id});
 		var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req));
 		// @ts-ignore
-		document.getElementById("trains_template_next_journey").href = u.WEBSITE_WEBPATH + "/journey/?journey_id=" + res[0].id
-		add_marker("train-solid.svg", title, 0, template3.innerHTML.replace(/id=/g, "class="), train.latitude, train.longitude);
+		document.getElementById("trains_template_next_journey").href = u.WEBSITE_WEBPATH + "/journey/?journey=" + res[0].id
+		add_marker("train-solid.svg", title, 0, template3.innerHTML.replace(/id=/g, "class=").replace(/copyx/g, "copy("+train.id+")"), train.latitude, train.longitude);
 	}
 	console.log("MARKERS LOADED");
 }
+
+async function copy(id: number) {
+	var req: XMLHttpRequest = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {});
+	var trains: Array<any> = JSON.parse(await r.receive_blocking(req));
+	for (const train of trains) {
+		if (train.id == id) {
+			navigator.clipboard.writeText(JSON.stringify(train));
+			alert("Copy successfully done");
+		}
+	}
+}
+
+// @ts-ignore
+window.copy = copy;

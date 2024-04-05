@@ -27,7 +27,7 @@ async function aaaaa(id: string): Promise<boolean> {
 
 window.onload = (): void => {
 	(async () => {
-		var ide: string = await findGetParameter("journey_id");
+		var ide: string = await findGetParameter("journey");
 		if (ide != null) {
 			var req: XMLHttpRequest = new (r.request as any)("POST", u.API_WEBPATH+"/get_journey", {id: ide});
 			var res: u.Dictionary<any> = JSON.parse(await r.receive_blocking(req));
