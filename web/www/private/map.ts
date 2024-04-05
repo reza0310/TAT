@@ -132,17 +132,3 @@ async function initMap_wrapped(): Promise<void> {
 	}
 	console.log("MARKERS LOADED");
 }
-
-async function copy(id: number) {
-	var req: XMLHttpRequest = new (r.request as any)("GET", u.API_WEBPATH+"/get_trains", {});
-	var trains: Array<any> = JSON.parse(await r.receive_blocking(req));
-	for (const train of trains) {
-		if (train.id == id) {
-			navigator.clipboard.writeText(JSON.stringify(train));
-			alert("Copy successfully done");
-		}
-	}
-}
-
-// @ts-ignore
-window.copy = copy;

@@ -5,6 +5,7 @@ const output_dir = path.resolve(__dirname, 'public');
 
 pages = [
     "map.ts",
+    "copy.ts",
 	"create/register.ts",
 	"account/check.ts",
 	"tickets/check.ts",
